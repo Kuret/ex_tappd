@@ -8,7 +8,10 @@ defmodule ExTappd.Client do
   end
 
   defp format_url(uri) do
-    ExTappd.base_url() <> uri
+    case String.starts_with?(uri, "http") do
+      true -> uri
+      false -> ExTappd.base_url() <> uri
+    end
   end
 
   defp ro_headers do

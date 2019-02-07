@@ -3,6 +3,7 @@ defmodule ExTappd.Helpers do
 
   def query_string(nil), do: ""
   def query_string([]), do: ""
+  def query_string(param) when is_binary(param), do: URI.encode(param)
   def query_string(params), do: "?" <> URI.encode_query(params)
 
   @doc """
