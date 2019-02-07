@@ -5,7 +5,7 @@ defmodule ExTappd.Menu do
   alias ExTappd.Client
 
   defstruct ~w[
-   created_at
+    created_at
     description
     draft
     footer
@@ -32,5 +32,6 @@ defmodule ExTappd.Menu do
 
   def get_menu(_, _), do: {:error, "Invalid id or source name"}
 
-  defp build_response(body), do: to_struct(__MODULE__, body)
+  defp build_response(%{"menu" => menu}), do: to_struct(__MODULE__, menu)
+  defp build_response(_), do: {:error, "Response was incorrectly formatted"}
 end
