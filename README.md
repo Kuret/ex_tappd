@@ -24,6 +24,7 @@ and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/ex_tappd](https://hexdocs.pm/ex_tappd).
 
 ### Inspiration
-Drew some inspirations from:
+Drew some inspirations from
 [SpotifyEx](https://github.com/jsncmgs1/spotify_ex)
+and
 [Tentacat](https://github.com/edgurgel/tentacat)
