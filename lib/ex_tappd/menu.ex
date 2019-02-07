@@ -4,6 +4,22 @@ defmodule ExTappd.Menu do
 
   alias ExTappd.Client
 
+  defstruct ~w[
+   created_at
+    description
+    draft
+    footer
+    id
+    location_id
+    name
+    position
+    push_notification_frequency
+    show_price_on_untappd
+    unpublished
+    updated_at
+    uuid
+  ]a
+
   def get_menu(id) when is_integer(id) do
     "/menus/#{id}" |> Client.get() |> handle_response()
   end
@@ -16,6 +32,5 @@ defmodule ExTappd.Menu do
 
   def get_menu(_, _), do: {:error, "Invalid id or source name"}
 
-  defp build_response(body), do: body
   defp build_response(body), do: to_struct(__MODULE__, body)
 end
