@@ -7,6 +7,12 @@ defmodule ExTappd.Client do
     |> HTTPoison.get(ro_headers())
   end
 
+  def post(uri, body) when is_binary(body) do
+    uri
+    |> format_url()
+    |> HTTPoison.post(body, rw_headers())
+  end
+
   defp format_url(uri) do
     case String.starts_with?(uri, "http") do
       true -> uri

@@ -4,7 +4,7 @@ defmodule ExTappd.Barcode do
 
   alias ExTappd.Client
 
-  def get_product(barcode) when is_binary(barcode) do
+  def get_product(barcode) do
     "https://world.openfoodfacts.org/api/v0/product/#{barcode}.json"
     |> Client.get()
     |> handle_response()
@@ -18,11 +18,9 @@ defmodule ExTappd.Barcode do
            },
            "status" => 1
          } <- body do
-      IO.puts("Product found")
-      IO.puts("Name: #{product_name}")
-      IO.puts("Brand: #{brand}")
+      {:ok, %{product: product_name, brand: brand}}
     else
-      _ -> IO.puts("Product not found")
+      _ -> {:error, :not_found}
     end
   end
 end
