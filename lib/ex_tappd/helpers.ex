@@ -6,6 +6,9 @@ defmodule ExTappd.Helpers do
   def query_string(param) when is_binary(param), do: URI.encode(param)
   def query_string(params), do: "?" <> URI.encode_query(params)
 
+  def encode_body(%{} = body), do: Poison.encode!(body)
+  def encode_body(body) when is_binary(body), do: Poison.encode!(body)
+
   @doc """
   Converts a map of string keys to a map of atoms and turns it into a struct
   """

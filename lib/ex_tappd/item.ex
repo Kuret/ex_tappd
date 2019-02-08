@@ -32,12 +32,22 @@ defmodule ExTappd.Item do
     brewery
     custom_brewery
     original_brewery
-    created_at
+    created_ati
     updated_at
   ]a
 
+  def list_section_items(section_id) do
+    "/sections/#{section_id}/items" |> Client.get() |> handle_response()
+  end
+
   def search_item(query) do
     "/items/search?q=#{query_string(query)}" |> Client.get() |> handle_response()
+  end
+
+  def add_item(item_id, section_id) do
+    body = %{untappd_id: item_id} |> encode_body()
+
+    "/sections/#{section_id}/items" |> Client.post(body) |> handle_response()
   end
 
   defp build_response(%{"item" => item}), do: to_struct(__MODULE__, item)
@@ -46,7 +56,5 @@ defmodule ExTappd.Item do
     Enum.map(items, &to_struct(__MODULE__, &1))
   end
 
-  defp build_response(body) do
-    {:error, body}
-  end
+  defp build_response(body), do: {:error, body}
 end
