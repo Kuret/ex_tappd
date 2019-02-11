@@ -57,4 +57,26 @@ defmodule ExTappd.Item do
   end
 
   defp build_response(body), do: {:error, body}
+
+  def get_average_rating([%{rating: _} | _] = items) do
+    items =
+      items
+      |> Enum.map(&parse_rating/1)
+      |> Enum.reject(&is_nil(&1))
+
+    if length(items) > 0 do
+      Enum.sum(items) / length(items)
+    else
+      nil
+    end
+  end
+
+  defp parse_rating(%{rating: rating}) do
+    with {rating, _rest} <- Float.parse(rating),
+         true <- rating > 0 do
+      rating
+    else
+      _ -> nil
+    end
+  end
 end
