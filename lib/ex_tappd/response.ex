@@ -29,7 +29,7 @@ defmodule ExTappd.Response do
       def handle_response({:ok, %HTTPoison.Response{status_code: _code, body: body}}) do
         response = body |> Poison.decode!() |> build_response
 
-        {:ok, response}
+        unless {:error, _} = response, do: {:ok, response}, else: response
       end
     end
   end
