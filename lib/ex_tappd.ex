@@ -9,6 +9,8 @@ defmodule ExTappd do
   def base_url, do: Application.get_env(:ex_tappd, :base_url)
   def api_user, do: Application.get_env(:ex_tappd, :api_user)
 
+  def default_location, do: Application.get_env(:ex_tappd, :default_location)
+
   defp rw_api_key, do: Application.get_env(:ex_tappd, :rw_api_key)
   defp ro_api_key, do: Application.get_env(:ex_tappd, :ro_api_key)
 end
