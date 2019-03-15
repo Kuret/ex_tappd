@@ -12,6 +12,8 @@ defmodule ExTappd.Helpers do
   @doc """
   Converts a map of string keys to a map of atoms and turns it into a struct
   """
+  def to_struct(struct, kind, key), do: Map.update!(struct, key, &to_struct(kind, &1))
+
   def to_struct(kind, attrs) do
     struct = struct(kind)
 
