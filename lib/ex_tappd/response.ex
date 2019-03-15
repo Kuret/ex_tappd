@@ -21,15 +21,33 @@ defmodule ExTappd.Response do
         {message, Map.put(Poison.decode!(body), "meta", %{"retry_after" => retry_after})}
       end
 
-      def handle_response({message, %HTTPoison.Response{status_code: code, body: body}})
-          when code in 400..499 do
-        {message, Poison.decode!(body)}
-      end
+      def handle_response({_, %HTTPoison.Response{status_code: 400}}), do: {:error, :bad_request}
+      def handle_response({_, %HTTPoison.Response{status_code: 401}}), do: {:error, :unauthorized}
+      def handle_response({_, %HTTPoison.Response{status_code: 403}}), do: {:error, :forbidden}
+      def handle_response({_, %HTTPoison.Response{status_code: 404}}), do: {:error, :not_found}
 
-      def handle_response({:ok, %HTTPoison.Response{status_code: _code, body: body}}) do
+      def handle_response({_, %HTTPoison.Response{status_code: 405}}),
+        do: {:error, :method_not_allowed}
+
+      def handle_response({_, %HTTPoison.Response{status_code: 406}}),
+        do: {:error, :format_not_acceptible}
+
+      def handle_response({_, %HTTPoison.Response{status_code: 410}}),
+        do: {:error, :resource_removed}
+
+      def handle_response({_, %HTTPoison.Response{status_code: 418}}),
+        do: {:error, :i_am_a_teapot}
+
+      def handle_response({_, %HTTPoison.Response{status_code: 500}}),
+        do: {:error, :internal_server_error}
+
+      def handle_response({_, %HTTPoison.Response{status_code: 500}}),
+        do: {:error, :service_unavailable}
+
+      def handle_response({:ok, %HTTPoison.Response{status_code: _code, body: body} = resp}) do
         response = body |> Poison.decode!() |> build_response
 
-        unless {:error, _} = response, do: {:ok, response}, else: response
+        with {:error, _} <- response, do: response, else: (_ -> {:ok, response})
       end
     end
   end
