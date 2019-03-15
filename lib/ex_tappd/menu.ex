@@ -20,7 +20,7 @@ defmodule ExTappd.Menu do
     uuid
   ]a
 
-  def list_menus(location_id) do
+  def list_menus(location_id \\ ExTappd.default_location()) do
     "/locations/#{location_id}/menus" |> Client.get() |> handle_response()
   end
 
