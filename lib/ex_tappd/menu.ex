@@ -34,7 +34,7 @@ defmodule ExTappd.Menu do
 
   defp build_response(%{"menu" => menu}), do: to_struct(__MODULE__, menu)
 
-  defp build_response(%{"menus" => [_ | _] = menus}) do
+  defp build_response(%{"menus" => menus}) when is_list(menus) do
     Enum.map(menus, &to_struct(__MODULE__, &1))
   end
 
