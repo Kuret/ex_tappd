@@ -19,6 +19,12 @@ defmodule ExTappd.Client do
     |> HTTPoison.put(body, rw_headers())
   end
 
+  def patch(uri, body) when is_binary(body) do
+    uri
+    |> format_url()
+    |> HTTPoison.patch(body, rw_headers())
+  end
+
   def delete(uri) do
     uri
     |> format_url()
